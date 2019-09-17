@@ -1,9 +1,8 @@
 import React, {useState} from 'react'
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
-import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
 import './Auth.css'
 
 
@@ -23,29 +22,105 @@ const useStyles = makeStyles(theme => ({
     menu: {
       width: 200,
     },
+    button: {
+        margin: theme.spacing(1),
+    },
+    input: {
+        display: 'none',
+    },
   }));
 
 const Auth=(props) =>{
+    const [login, setLogin] = useState(true)
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
     const classes = useStyles();
 
+    const changelogin = (e) =>{
+        e.preventDefault()
+        setLogin(!login)
+
+        setEmail('')
+        setPassword('')
+        setFirstName('')
+        setLastName('')
+    }
+
+    const handlesubmit =(e) =>{
+        e.preventDefault()
+        let url = login ?  'http://localhost:3002/user/signin': 'http://localhost:3002/user/signup'
+        let role = (props.logoutCount >= 5)? 'Admin': null
+        console.log(role)
+
+        fetch(url, {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({user:{
+                firstName:firstName,
+                lastName:lastName,
+                email:email,
+                password:password,
+                role: role
+            }})
+        }).then(res => res.json())
+        .then(data=>{
+            props.updateToken(data.sessionToken)
+        })
+    }
+
     return(
-        <form className='card-like'>
-            <h1>LOGIN</h1>
+        <form  onSubmit={(e)=>handlesubmit(e)}>
+            <Box
+                boxShadow={3}
+                bgcolor="background.paper"
+                m={1}
+                p={1}
+                style={{ width: '20rem', margin: '20vh auto' }}
+                className='card-like'
+            >
+
+      
+            <h1>{login? 'LOG IN' : 'SIGN UP'}</h1>
             <TextField
-                id="standard-required"
+                required
                 label="Email:"
                 margin="normal"
+                onChange={(e)=>setEmail(e.target.value)}
             />
             <TextField
-                id="standard-password-input"
+                required
                 label="Password"
                 type="password"
-                autoComplete="current-password"
                 margin="normal"
+                pattern = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+                onChange={(e)=>setPassword(e.target.value)}
             />
 
+            {login ? null:
+                <>
+                <TextField
+                required
+                label="First Name:"
+                margin="normal"
+                onChange={(e)=>setFirstName(e.target.value)}
+                /> 
+                <TextField
+                required
+                label="Last Name:"
+                margin="normal"
+                onChange={(e)=>setLastName(e.target.value)}
+                /> 
+                </>
+            }
+
             <Button type= 'submit' variant="contained" className={classes.button}>Submit</Button>
-            <Button>Sign Up</Button>
+            <Button onClick={(e)=>changelogin(e)}>{login? 'Sign Up': 'Log In'}</Button>
+            </Box>
         </form>
     )
 }
