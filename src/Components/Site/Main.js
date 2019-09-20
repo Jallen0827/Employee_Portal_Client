@@ -16,8 +16,14 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
+
+
 const Main = (props) =>{
     const classes = useStyles();
+
+    console.log('hi')
+    console.log(props.role)
+    console.log(props.token)
 
     return(
     <div className={classes.root}>
@@ -26,7 +32,7 @@ const Main = (props) =>{
             <Sidebar className={classes.paper}/>
           </Grid>
           <Grid item xs={10}>
-            <HotLinks token={props.token}/>
+            <HotLinks token={props.token} role={props.role}/>
           </Grid>
         </Grid>
       </div>

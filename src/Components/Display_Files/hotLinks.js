@@ -1,34 +1,38 @@
 import React, {useState, useEffect} from 'react'
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardActions from '@material-ui/core/CardActions';
+import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components'
-import Img from '../../Assets/Logo.png'
+import Link from './Link'
+import Upload from './upload'
 
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-`
-
-const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-`
 
 const Background = styled.div`
     background: linear-gradient(to bottom, white, #e1e6e2);
-    height: 130%;
+    height: 100%;
 `
 
 const useStyles = makeStyles(theme => ({
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paper1: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+    },
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        height: 130,
+        width: 200,
+    },
+    control: {
+        padding: theme.spacing(2),
+    },
   button: {
     margin: theme.spacing(1),
     position: 'relative',
@@ -54,7 +58,9 @@ const useStyles = makeStyles(theme => ({
 
 const HotLinks = (props) =>{
     const classes = useStyles();
+    const [spacing, setSpacing] = useState(2);
     const [links, setLinks] = useState([])
+    const [open, setOpen] = React.useState(false);
 
     const fetchLinks=()=>{
         fetch('http://localhost:3002/file/all', {
@@ -66,98 +72,29 @@ const HotLinks = (props) =>{
         }).then(res=> res.json())
         .then(data => {
             setLinks(data)
+            console.log(data[0].id)
         })
     }
 
     useEffect(()=>{
         fetchLinks()
-        console.log()
+        
     }, [])
 
     return( 
         <Background>
-            Links.map((Link, index)=>{
-
-            })            
-            <Row>
-                <Column>
-                        <Card className={classes.card}>
-                            <CardHeader
-                                title="File Name"      
-                            />
-                            <CardMedia
-                                className={classes.media}
-                                image={Img}
-                                title="Logo"
-                            />
-                        <CardActions>
-                            <Button size="small" color="dark">Edit</Button>
-                            <Button size="small" color="dark">Delete</Button>
-                        </CardActions>
-                        </Card>
-                </Column>
-                <Column>
-                        <Card className={classes.card}>
-                            <CardHeader
-                                title="File Name"      
-                            />
-                            <CardMedia
-                                className={classes.media}
-                                image={Img}
-                                title="Logo"
-                            />
-                        <CardActions>
-                            <Button variant="contained" color="primary">Edit</Button>
-                            <Button variant="contained" color="secondary">Delete</Button>
-                        </CardActions>
-                        </Card>
-                </Column>
-                <Column>
-                        <Card className={classes.card}>
-                            <CardHeader
-                                title="File Name"      
-                            />
-                            <CardMedia
-                                className={classes.media}
-                                image={Img}
-                                title="Logo"
-                            />
-                        <CardActions>
-                            <Button size="small" color="dark">Edit</Button>
-                            <Button size="small" color="dark">Delete</Button>
-                        </CardActions>
-                        </Card>
-                </Column>
-                <Column>
-                        <Card className={classes.card}>
-                            <CardHeader
-                                title="File Name"      
-                            />
-                            <CardMedia
-                                className={classes.media}
-                                image={Img}
-                                title="Logo"
-                            />
-                        <CardActions>
-                            <Button size="small" color="dark">Edit</Button>
-                            <Button size="small" color="dark">Delete</Button>
-                        </CardActions>
-                        </Card>
-                </Column>
-            </Row>
-            
-            <input
-                accept="image/*"
-                className={classes.input}
-                id="contained-button-file"
-                multiple
-                type="file"
-            />
-            <label htmlFor="contained-button-file">
-                <Button variant="contained" component="span" className={classes.button}>
-                <Typography>Upload</Typography>
-                </Button>
-            </label>        
+            <Grid container className={classes.root} spacing={2}>
+                <Grid item xs={12}>
+                    <Grid container justify="center" spacing={spacing}>
+                    {links.map((value, index) => (
+                        <Grid key={index} item>
+                        <Link info ={value} fetchLinks={fetchLinks} token={props.token} role={props.role}/>
+                        </Grid>
+                    ))}
+                    </Grid>
+                </Grid>
+            </Grid>
+            {(props.role==='Admin')?<Upload fetchLinks={fetchLinks} token={props.token}/>:null}
         </Background>
     )
 }

@@ -17,7 +17,8 @@ let appBackground = {
 function App() {
   const [sessionToken, setSessionToken] = useState(false)
   const [signInCount, setSignInCount] = useState(0)
-
+  const [role, setRole] = useState('')
+  // localStorage.clear()
   useEffect(()=>{
     if(localStorage.getItem('token')){
       setSessionToken(localStorage.getItem('token'))
@@ -29,9 +30,11 @@ function App() {
       console.log(signInCount)
   }
 
-  const updateToken = (newToken) =>{
+  const updateToken = (newToken, role) =>{
     localStorage.setItem('token', newToken)
+    localStorage.setItem('role', role)
     setSessionToken(newToken)
+    setRole(role)
   }
 
   const clearToken = ()=>{
@@ -39,12 +42,17 @@ function App() {
     setSessionToken('')
   }
 
+  // const userRole = (authRole) =>{
+  //   setRole(authRole)
+  //   console.log(authRole)
+  // }
+
   return (
     <div className="App" style={appBackground}>
       <Navbar clearToken={clearToken} logoutCount = {logoutCounter}/>
       {sessionToken === localStorage.getItem('token') ? 
       <Router>
-      <Main token={sessionToken}/>
+      <Main token={sessionToken} role={localStorage.getItem('role')}/>
       </Router>
       : <Auth updateToken={updateToken} logoutCount = {signInCount}/>}
     </div>

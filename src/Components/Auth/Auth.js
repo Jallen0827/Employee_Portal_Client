@@ -36,7 +36,7 @@ const Auth=(props) =>{
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    
     const classes = useStyles();
 
     const changelogin = (e) =>{
@@ -52,8 +52,8 @@ const Auth=(props) =>{
     const handlesubmit =(e) =>{
         e.preventDefault()
         let url = login ?  'http://localhost:3002/user/signin': 'http://localhost:3002/user/signup'
-        let role = (props.logoutCount >= 5)? 'Admin': null
-        console.log(role)
+        let roleUser = (props.logoutCount >= 5)? 'Admin': null
+        // props.setRole(roleUser)
 
         fetch(url, {
             method:'POST',
@@ -65,11 +65,14 @@ const Auth=(props) =>{
                 lastName:lastName,
                 email:email,
                 password:password,
-                role: role
+                role: roleUser
             }})
         }).then(res => res.json())
         .then(data=>{
-            props.updateToken(data.sessionToken)
+            let role1 = (data.user)? data.user.role: null
+            // props.role(role1)
+            console.log('akjdf;akdjg;kadga;dwgjd;agjad;g')
+            props.updateToken(data.sessionToken, role1)
         })
     }
 
