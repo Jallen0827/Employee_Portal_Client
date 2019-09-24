@@ -4,6 +4,8 @@ import {
     Link,
     Switch
 } from 'react-router-dom'
+import Hotlinks from '../Display_Files/hotLinks'
+import TimeSheet from '../TimeSheet/timesheet'
 
 
 const Sidebar = () =>{
@@ -18,8 +20,8 @@ const Sidebar = () =>{
             </div>
             <div className='sidebar-route'>
                 <Switch>
-                    <Route exact path='/hotlinks'></Route>
-                    <Route exact path='/timesheet'></Route>
+                    <Route exact path='/hotlinks'><Hotlinks/></Route>
+                    <Route exact path='/timesheet'><TimeSheet/></Route>
                 </Switch>
             </div>
         </div>

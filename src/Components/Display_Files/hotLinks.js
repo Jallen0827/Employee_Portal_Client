@@ -9,7 +9,8 @@ import Upload from './upload'
 
 const Background = styled.div`
     background: linear-gradient(to bottom, white, #e1e6e2);    
-    margin-top: 1.8vh
+    margin-top: 1.8vh;
+    margin-right: 1vw;
 `
 
 const useStyles = makeStyles(theme => ({
