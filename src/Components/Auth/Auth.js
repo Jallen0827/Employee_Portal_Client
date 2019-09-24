@@ -80,6 +80,7 @@ const Auth=(props) =>{
         let url = login ?  `${APIURL}/user/signin`: `${APIURL}/user/signup`
         let roleUser = (props.logoutCount >= 5)? 'Admin': null
         // props.setRole(roleUser)
+        console.log(url)
         if(emailValid&&passwordValid){
         fetch(url, {
             method:'POST',
