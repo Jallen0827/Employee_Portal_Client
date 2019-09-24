@@ -7,7 +7,7 @@ switch (window.location.hostname) {
         APIURL = 'http://localhost:3002';
         break;
     // this is the deployed react application
-    case 'https://ja-employee-portal.herokuapp.com/':
+    case 'https://ja-employee-portal.herokuapp.com':
         // this is the full url of your deployed API
         APIURL = 'https://employee-portal-server.herokuapp.com'
 }
