@@ -5,9 +5,9 @@ body{
 
 .sidebar {
   display: flex;
-  background-color: whitesmoke; 
+  background: linear-gradient(to bottom, white, #e1e6e2); 
   margin: 15px auto;
-  height: 60vh;
+  height: 50vh;
 }
 
 ul {

@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import APIURL from '../../helpers/env'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -64,21 +65,15 @@ const Upload = (props)=>{
 
     const uploadFile = (e) =>{
         e.preventDefault()
-        // console.log(e)
+
         console.log(file)
         setOpen(false)
-        // let type = file.type
-        
-        // let name = file.name
-        // let size = file.size
 
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('name',fileName)
-        // for( let v of formData.values()){
-        //     console.log(v)
-        // }
-        fetch('http://localhost:3002/file/upload', {
+        formData.append('title',fileName)
+
+        fetch(`${APIURL}/file/upload`, {
             method:'POST',
             headers:new Headers({
                 'Authorization': props.token                                

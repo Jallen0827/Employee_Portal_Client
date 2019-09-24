@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import APIURL from '../../helpers/env'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
@@ -28,6 +29,9 @@ const useStyles = makeStyles(theme => ({
     input: {
         display: 'none',
     },
+    helper:{
+        color: 'red'
+    }
   }));
 
 const Auth=(props) =>{
@@ -36,6 +40,10 @@ const Auth=(props) =>{
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [emailValid, setEmailValid] = useState(true)
+    const [passwordValid, setPasswordValid] = useState(true)
+    const [firstNameValid, setFirstNameValid] = useState(false)
+    const [lastNameValid, setLastNameValid] = useState(false)
     
     const classes = useStyles();
 
@@ -49,12 +57,30 @@ const Auth=(props) =>{
         setLastName('')
     }
 
+    const emailValidation = (e) =>{
+        let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        if(email.match(regex)){
+            setEmailValid(true)
+        }else{
+            setEmailValid(false)
+        }
+    }
+
+    const passwordValidation = (e) =>{
+        let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        if(password.length>5){
+            setPasswordValid(true)
+        }else{
+            setPasswordValid(false)
+        }
+    }
+
     const handlesubmit =(e) =>{
         e.preventDefault()
-        let url = login ?  'http://localhost:3002/user/signin': 'http://localhost:3002/user/signup'
+        let url = login ?  `${APIURL}/user/signin`: `${APIURL}/user/signup`
         let roleUser = (props.logoutCount >= 5)? 'Admin': null
         // props.setRole(roleUser)
-
+        if(emailValid&&passwordValid){
         fetch(url, {
             method:'POST',
             headers:{
@@ -70,11 +96,10 @@ const Auth=(props) =>{
         }).then(res => res.json())
         .then(data=>{
             let role1 = (data.user)? data.user.role: null
-            // props.role(role1)
-            console.log('akjdf;akdjg;kadga;dwgjd;agjad;g')
             props.updateToken(data.sessionToken, role1)
         })
     }
+}
 
     return(
         <form  onSubmit={(e)=>handlesubmit(e)}>
@@ -93,15 +118,19 @@ const Auth=(props) =>{
                 required
                 label="Email:"
                 margin="normal"
+                className={classes.helper}
                 onChange={(e)=>setEmail(e.target.value)}
+                onBlur={(e)=>emailValidation(e)}
+                helperText={emailValid? '': 'Invalid Email'}
             />
             <TextField
                 required
                 label="Password"
                 type="password"
                 margin="normal"
-                pattern = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
                 onChange={(e)=>setPassword(e.target.value)}
+                onBlur={(e)=>{passwordValidation(e)}}
+                helperText={passwordValid?'':'Password must be 5 characters long'}
             />
 
             {login ? null:

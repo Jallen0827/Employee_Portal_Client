@@ -49,7 +49,7 @@ function App() {
 
   return (
     <div className="App" style={appBackground}>
-      <Navbar clearToken={clearToken} logoutCount = {logoutCounter}/>
+      <Navbar clearToken={clearToken} logoutCount = {logoutCounter} token={sessionToken}/>
       {sessionToken === localStorage.getItem('token') ? 
       <Router>
       <Main token={sessionToken} role={localStorage.getItem('role')}/>

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import APIURL from '../../helpers/env'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components'
@@ -7,8 +8,8 @@ import Upload from './upload'
 
 
 const Background = styled.div`
-    background: linear-gradient(to bottom, white, #e1e6e2);
-    height: 100%;
+    background: linear-gradient(to bottom, white, #e1e6e2);    
+    margin-top: 1.8vh
 `
 
 const useStyles = makeStyles(theme => ({
@@ -53,6 +54,11 @@ const useStyles = makeStyles(theme => ({
     height: 0,
     paddingTop: '56.25%', // 16:9
 
+  },
+  background:{
+    // backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
   }
 }));
 
@@ -63,7 +69,7 @@ const HotLinks = (props) =>{
     const [open, setOpen] = React.useState(false);
 
     const fetchLinks=()=>{
-        fetch('http://localhost:3002/file/all', {
+        fetch(`${APIURL}/file/all`, {
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json',
@@ -72,7 +78,6 @@ const HotLinks = (props) =>{
         }).then(res=> res.json())
         .then(data => {
             setLinks(data)
-            console.log(data[0].id)
         })
     }
 
@@ -82,7 +87,7 @@ const HotLinks = (props) =>{
     }, [])
 
     return( 
-        <Background>
+        <Background className={classes.background}>
             <Grid container className={classes.root} spacing={2}>
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={spacing}>
