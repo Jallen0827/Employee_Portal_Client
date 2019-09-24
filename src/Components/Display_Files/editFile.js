@@ -98,7 +98,17 @@ const Edit = (props)=>{
             <div className={classes.paper1}>
                 <form onSubmit={(e)=>{EditFile(e, props.linkId)}}>
                     <h2 id="transition-modal-title">CHANGE FILE</h2>
-
+                    <TextField
+                        required
+                        id="standard-required"
+                        label="File Name"
+                        // defaultValue="File Title"
+                        className={classes.textField}
+                        margin="normal"
+                        onChange={(e)=>setFileName(e.target.value)}
+                    />
+                    <br/>
+                    <br/>
                     <TextField
                         // accept="image/*"
                         // className={classes.input}

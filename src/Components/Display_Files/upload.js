@@ -106,7 +106,7 @@ const Upload = (props)=>{
                     <TextField
                         required
                         id="standard-required"
-                        label="Required"
+                        label="File Name"
                         // defaultValue="File Title"
                         className={classes.textField}
                         margin="normal"
