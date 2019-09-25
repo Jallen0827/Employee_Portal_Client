@@ -1,12 +1,17 @@
+//IMPORT PACKAGES
 import React, {useState} from 'react'
+
+//IMPORT COMPONENTS
 import APIURL from '../../helpers/env'
+import './Auth.css'
+
+//IMPORT MATERIAL UI COMPONENTS
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
-import './Auth.css'
 
-
+//MATERIAL-UI STYLES
 const useStyles = makeStyles(theme => ({
     container: {
       display: 'flex',
@@ -42,8 +47,7 @@ const Auth=(props) =>{
     const [password, setPassword] = useState('')
     const [emailValid, setEmailValid] = useState(true)
     const [passwordValid, setPasswordValid] = useState(true)
-    const [firstNameValid, setFirstNameValid] = useState(false)
-    const [lastNameValid, setLastNameValid] = useState(false)
+    const [error, setError] = useState(true)
     
     const classes = useStyles();
 
@@ -97,7 +101,10 @@ const Auth=(props) =>{
         }).then(res => res.json())
         .then(data=>{
             let role1 = (data.user)? data.user.role: null
-            props.updateToken(data.sessionToken, role1)
+            if(data.user){
+                props.updateToken(data.sessionToken, role1)
+            }
+            setError(false)
         })
     }
 }
@@ -112,17 +119,21 @@ const Auth=(props) =>{
                 style={{ width: '20rem', margin: '20vh auto' }}
                 className='card-like'
             >
-
-      
+            <h4 className={classes.helper}>{error? '' :'Invalid Email or Password'}</h4>
             <h1>{login? 'LOG IN' : 'SIGN UP'}</h1>
             <TextField
                 required
                 label="Email:"
                 margin="normal"
-                className={classes.helper}
+                style={{'color': 'red'}}
                 onChange={(e)=>setEmail(e.target.value)}
                 onBlur={(e)=>emailValidation(e)}
                 helperText={emailValid? '': 'Invalid Email'}
+                FormHelperTextProps={{
+                    classes:{
+                      root: classes.helper,
+                      error: classes.helper
+                    }}}
             />
             <TextField
                 required
@@ -132,6 +143,11 @@ const Auth=(props) =>{
                 onChange={(e)=>setPassword(e.target.value)}
                 onBlur={(e)=>{passwordValidation(e)}}
                 helperText={passwordValid?'':'Password must be 5 characters long'}
+                FormHelperTextProps={{
+                    classes:{
+                      root: classes.helper,
+                      error: classes.helper
+                    }}}
             />
 
             {login ? null:
