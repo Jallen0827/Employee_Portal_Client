@@ -17,6 +17,7 @@ import withWidth from '@material-ui/core/withWidth';
 import Sidebar from './Sidebar'
 import HotLinks from '../Display_Files/hotLinks'
 import TimeSheet from '../TimeSheet/timesheet'
+import Tasks from '../Tasks/Task'
 
 //STYLED COMPONENTS && MAKESTYLES
 const Background = styled.div`
@@ -59,6 +60,7 @@ const Main = (props) =>{
             {/* <Sidebar className={classes.paper}/> */}
             
                <ul className='sidebar-list list-unstyled'>
+                   <li><Link to='/home'>Home</Link></li>                   
                    <li><Link to='/hotlinks'>Hot Links</Link></li>
                    <li><Link to='/timesheet'>Time Sheet</Link></li>
                </ul>
@@ -68,6 +70,8 @@ const Main = (props) =>{
           </Grid>
           <Grid item xs={(width!='sm')?10:12}>
             <Switch>
+              <Route exact path="/home"><Tasks token={props.token}/></Route>
+              <Route exact path="/"><Tasks token={props.token}/></Route>
               <Route exact path='/hotlinks'><HotLinks token={props.token} role={props.role}/></Route>
               <Route exact path='/timesheet'><TimeSheet/></Route>
             </Switch>

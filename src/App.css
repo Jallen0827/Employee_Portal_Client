@@ -23,4 +23,14 @@ ul {
   text-decoration: none;
 }
 
+.sidebar-list a:hover{
+  color: blue;
+}
+
+.sidebar-list li{
+  margin-top: .5em;
+}
+
+
+
 
