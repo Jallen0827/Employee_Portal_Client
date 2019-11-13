@@ -55,6 +55,7 @@ const Tasks = (props) => {
             })
         }).then(res=> res.json())
         .then(data => {
+            //DATA RETURNS AN ARRAY OF OBJECTS. EACH OBJECT CONTAINS KEY VALUES REPRESENTING POSTGRES COLUMN NAMES.THE FILTER METHOD HELPS ME LOOP OVER THIS DATA ARRAY AND CREATE NEW ARRAYS. THE CONDITION I AM LOOKING FOR IS WHAT VALUE IS ASSOCIATED WITH THE KEY OF TYPE. ONCE MY NEW ARRAYS ARE CREATED I STORE THEM IN STATE VARIABLES AND USE THEM LATER IN MY CODE TO MAP OVER AND CREATE NEW COMPONENTS
             let todo = data.filter(value=> value.type == 'To do')
             let progress = data.filter(value=> value.type == 'In progress')
             let done = data.filter(value=> value.type == 'Done')

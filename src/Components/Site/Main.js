@@ -55,7 +55,7 @@ const Main = (props) =>{
     <div className={classes.root}>
         <Grid container spacing={1}> 
           <Grid item xs={2}>
-            <Hidden only={['sm', 'xs']}>
+            {/* <Hidden only={['sm', 'xs']}> */}
           <Background className={classes.background}>  
             {/* <Sidebar className={classes.paper}/> */}
             
@@ -66,7 +66,7 @@ const Main = (props) =>{
                </ul>
             
           </Background> 
-            </Hidden>
+            {/* </Hidden> */}
           </Grid>
           <Grid item xs={(width!='sm')?10:12}>
             <Switch>
